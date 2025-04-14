@@ -12,7 +12,7 @@ class MessageController {
 
     try {
       const message = await this.twilioClient.messages.create({
-        to: "whatsapp:" + to,
+        to,
         from: process.env.TWILIO_PHONE_NUMBER,
         body,
       });

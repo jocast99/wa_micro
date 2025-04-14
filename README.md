@@ -62,7 +62,7 @@ Options:
    ```
 3. Click **Save**.
 
-Follow the instruction in https://www.twilio.com/docs/whatsapp/self-sign-up to create production environment for Twilio and set the environment variable with proper WhatsApp senders and https://www.twilio.com/docs/whatsapp/api#configuring-inbound-message-webhooks to reset webhook.
+Follow the instruction in https://www.twilio.com/docs/whatsapp/self-sign-up to create production environment for Twilio and set the environment variable with proper WhatsApp senders and https://www.twilio.com/docs/whatsapp/api#configuring-inbound-message-webhooks to reset webhook. Remember to set same webhook url for all phone numbers.
 
 ---
 
@@ -89,7 +89,7 @@ Follow the instruction in https://www.twilio.com/docs/whatsapp/self-sign-up to c
 ### **Example Request**
 
 ```bash
-curl -X POST http://localhost:3000/api/send-message \
+curl -X POST https://your-ngrok-url.ngrok.io/api/send-message \
 -H "Content-Type: application/json" \
 -d '{
   "to": "whatsapp:+14155238886",
