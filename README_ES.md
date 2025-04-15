@@ -43,17 +43,6 @@
 ### **Paso 1: Implementar un servidor de webhooks**
 
 Necesita una **URL de acceso público** (no `localhost`).
-Opciones:
-
-- **Ngrok (para pruebas)**
-
-```bash
-ngrok http 3000 # Proporciona una URL pública como https://abc123.ngrok.io
-```
-
-- **Alojamiento en la nube (producción)**
-
-(p. ej., AWS, Render, Railway, Vercel, etc.)
 
 ### **Paso 2: Configurar el webhook en Twilio**
 
@@ -61,12 +50,12 @@ ngrok http 3000 # Proporciona una URL pública como https://abc123.ngrok.io
 2. En **"Cuando llega un mensaje"**, introduzca:
 
 ```
-https://your-ngrok-url.ngrok.io/api/webhook
+http://159.223.204.158:8080/api/webhook
 ```
 
 3. Haga clic en **Guardar**.
 
-Sigue las instrucciones en https://www.twilio.com/docs/whatsapp/self-sign-up para crear un entorno de producción para Twilio y configurar la variable de entorno con los remitentes de WhatsApp adecuados. También puedes usar https://www.twilio.com/docs/whatsapp/api#configuring-inbound-message-webhooks para restablecer el webhook. Recuerda configurar la misma URL de webhook para todos los números de teléfono.
+Siga las instrucciones en https://www.twilio.com/docs/whatsapp/self-sign-up para crear un entorno de producción para Twilio y configure la variable de entorno con los remitentes de WhatsApp adecuados. https://www.twilio.com/docs/whatsapp/api#configuring-inbound-message-webhooks para restablecer el webhooks. Recuerda configurar la misma URL de webhook para todos los números de teléfono.
 
 ---
 
@@ -88,16 +77,16 @@ Sigue las instrucciones en https://www.twilio.com/docs/whatsapp/self-sign-up par
 ```
 
 - **to**: El número de teléfono del destinatario en el formato `whatsapp:+<código-de-país><número-de-teléfono>`.
-- **Cuerpo**: El contenido del mensaje a enviar.
+- **body**: El contenido del mensaje que se enviará.
 
 ### **Solicitud de ejemplo**
 
 ```bash
-curl -X POST https://your-ngrok-url.ngrok.io/api/send-message \
+curl -X POST http://159.223.204.158:8080/api/send-message \
 -H "Content-Type: application/json" \
 -d '{
 "to": "whatsapp:+14155238886",
-"cuerpo": "¡Hola, este es un mensaje de prueba!"
+"body": "¡Hola, este es un mensaje de prueba!"
 }'
 ```
 
@@ -112,13 +101,13 @@ curl -X POST https://your-ngrok-url.ngrok.io/api/send-message \
 
 ---
 
-## **2. Gestionar webhook entrante**
+## **2. Gestionar webhooks entrantes**
 
 ### **Punto final**
 
 `POST /api/webhook`
 
-Twilio utiliza este punto final para enviar mensajes entrantes de WhatsApp a tu servidor.
+Twilio utiliza este punto final para enviar mensajes entrantes de WhatsApp a su servidor.
 
 ### **Cuerpo de la solicitud**
 

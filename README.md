@@ -43,22 +43,14 @@
 
 ### **Step 1: Deploy a Webhook Server**
 
-You need a **publicly accessible URL** (not `localhost`).  
-Options:
-
-- **Ngrok (for testing)**
-  ```bash
-  ngrok http 3000  # Gives you a public URL like https://abc123.ngrok.io
-  ```
-- **Cloud Hosting (Production)**  
-  (e.g., AWS, Render, Railway, Vercel, etc.)
+You need a **publicly accessible URL** (not `localhost`).
 
 ### **Step 2: Configure Webhook in Twilio**
 
 1. Go back to **WhatsApp Sandbox Settings** in the Twilio Console.
 2. Under **"When a message comes in"**, enter:
    ```
-   https://your-ngrok-url.ngrok.io/api/webhook
+   http://159.223.204.158:8080/api/webhook
    ```
 3. Click **Save**.
 
@@ -73,6 +65,10 @@ Follow the instruction in https://www.twilio.com/docs/whatsapp/self-sign-up to c
 ### **Endpoint**
 
 `POST /api/send-message`
+
+### **Headers**:
+
+`Authorization`: Your API key (`API_KEY` from the `.env` file).
 
 ### **Request Body**
 
@@ -89,8 +85,9 @@ Follow the instruction in https://www.twilio.com/docs/whatsapp/self-sign-up to c
 ### **Example Request**
 
 ```bash
-curl -X POST https://your-ngrok-url.ngrok.io/api/send-message \
+curl -X POST http://159.223.204.158:8080/api/send-message \
 -H "Content-Type: application/json" \
+-H "Authorization: 3439650e4b002208b9da6e9f85a87edd00cbaaf809cf736c49f17edd2097bd69" \
 -d '{
   "to": "whatsapp:+14155238886",
   "body": "Hello, this is a test message!"
@@ -149,6 +146,7 @@ TWILIO_SALES_SUPPORT_NUMBER="whatsapp:+14111111111"
 AI_MICROSERVICE_URL="http://localhost:5000/chat/sofia"
 AI_MICROSERVICE_AUTH_KEY="your_ai_microservice_auth_key"
 AI_MICROSERVICE_PROVIDER="openai"
+API_KEY=your_api_key
 ```
 
 Make sure to replace the placeholders with your actual Twilio and AI microservice credentials.
