@@ -8,14 +8,20 @@ class MessageController {
   }
 
   async sendMessage(req, res) {
-    const { to, body } = req.body;
+    const { to, body, mediaUrl } = req.body;
+
+    let messageParam = {
+      to,
+      from: process.env.TWILIO_PHONE_NUMBER,
+      body,
+    };
+
+    if (mediaUrl) {
+      messageParam.mediaUrl = [mediaUrl];
+    }
 
     try {
-      const message = await this.twilioClient.messages.create({
-        to,
-        from: process.env.TWILIO_PHONE_NUMBER,
-        body,
-      });
+      const message = await this.twilioClient.messages.create(messageParam);
       res.status(200).json({ success: true, messageSid: message.sid });
     } catch (error) {
       console.error("Error sending message:", error);

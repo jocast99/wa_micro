@@ -6,7 +6,15 @@ class WebhookController {
 
     // Handle incoming messages
     const incomingMessage = req.body.Body;
+    const image_url = req.body.MediaUrl0;
     const toNumber = req.body.To;
+
+    let requestBody = {
+      provider: process.env.AI_MICROSERVICE_PROVIDER,
+      query: incomingMessage,
+    };
+
+    if (image_url) requestBody.image_url = image_url;
 
     const response = await fetch(process.env.AI_MICROSERVICE_URL, {
       method: "POST",
@@ -14,10 +22,7 @@ class WebhookController {
         "Content-Type": "application/json",
         Authorization: process.env.AI_MICROSERVICE_AUTH_KEY,
       },
-      body: JSON.stringify({
-        provider: process.env.AI_MICROSERVICE_PROVIDER,
-        query: incomingMessage,
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {

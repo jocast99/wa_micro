@@ -67,6 +67,10 @@ Siga las instrucciones en https://www.twilio.com/docs/whatsapp/self-sign-up para
 
 `POST /api/send-message`
 
+### **Encabezados**:
+
+`Authorization`: Tu clave de API (`API_KEY` del archivo `.env`).
+
 ### **Cuerpo de la solicitud**
 
 ```json
@@ -77,13 +81,14 @@ Siga las instrucciones en https://www.twilio.com/docs/whatsapp/self-sign-up para
 ```
 
 - **to**: El número de teléfono del destinatario en el formato `whatsapp:+<código-de-país><número-de-teléfono>`.
-- **body**: El contenido del mensaje que se enviará.
+- **body**: El contenido del mensaje a enviar.
 
-### **Solicitud de ejemplo**
+### **Ejemplo de solicitud**
 
 ```bash
 curl -X POST http://159.223.204.158:8080/api/send-message \
 -H "Content-Type: application/json" \
+-H "Authorization: 3439650e4b002208b9da6e9f85a87edd00cbaaf809cf736c49f17edd2097bd69" \
 -d '{
 "to": "whatsapp:+14155238886",
 "body": "¡Hola, este es un mensaje de prueba!"
@@ -95,26 +100,26 @@ curl -X POST http://159.223.204.158:8080/api/send-message \
 ```json
 {
   "success": true,
-  "messageSid": "SMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+  "messageSid": "SMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 }
 ```
 
 ---
 
-## **2. Gestionar webhooks entrantes**
+## **2. Gestionar webhook entrante**
 
 ### **Punto final**
 
 `POST /api/webhook`
 
-Twilio utiliza este punto final para enviar mensajes entrantes de WhatsApp a su servidor.
+Twilio utiliza este punto final para enviar mensajes entrantes de WhatsApp a tu servidor.
 
 ### **Cuerpo de la solicitud**
 
 Twilio enviará una carga útil con los siguientes campos:
 
-- **Body**: El contenido del mensaje entrante.
-- **To**: El número de teléfono de Twilio que recibió el mensaje.
+- **Cuerpo**: El contenido del mensaje entrante.
+- **Para**: El número de teléfono de Twilio que recibió el mensaje.
 
 ### **Ejemplo de carga útil**
 
@@ -127,7 +132,7 @@ Twilio enviará una carga útil con los siguientes campos:
 
 ### **Respuesta**
 
-El servidor responderá con un mensaje TwiML con la respuesta generada por IA, que podrás ver a través de WhatsApp.
+El servidor responderá con un mensaje TwiML con la respuesta generada por IA. Podrás ver la respuesta a través de WhatsApp.
 
 ---
 
@@ -135,13 +140,14 @@ El servidor responderá con un mensaje TwiML con la respuesta generada por IA, q
 
 ```env
 TWILIO_ACCOUNT_SID=ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-TWILIO_AUTH_TOKEN=tu_token_de_autenticación
-TWILIO_PHONE_NUMBER="whatsapp:+1411111111"
+TWILIO_AUTH_TOKEN=tu_token_de_autorización
+TWILIO_PHONE_NUMBER="whatsapp:+14111111111"
 TWILIO_TECH_SUPPORT_NUMBER="whatsapp:+14111111111"
 TWILIO_SALES_SUPPORT_NUMBER="whatsapp:+14111111111"
 AI_MICROSERVICE_URL="http://localhost:5000/chat/sofia"
-AI_MICROSERVICE_AUTH_KEY="tu_clave_de_autenticación_de_microservicios_de_ai"
+AI_MICROSERVICE_AUTH_KEY="tu_clave_de_autorización_de_microservicios_ai"
 AI_MICROSERVICE_PROVIDER="openai"
+API_KEY=tu_clave_de_API
 ```
 
-Asegúrate de reemplazar los marcadores de posición con tu Twilio real y credenciales de microservicios de IA.
+Asegúrate de para reemplazar los marcadores de posición con sus credenciales reales de microservicio de Twilio y AI.
