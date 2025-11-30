@@ -13,7 +13,6 @@ const metaWaController = new MetaWaController();
 // body: { platform, to, body }
 router.post(
   "/wa/send",
-  authMiddleware,
   platformResolver,
   metaWaController.sendMessage.bind(metaWaController) // este será el libre
 );
@@ -22,7 +21,6 @@ router.post(
 // body: { platform, to, template_name, language_code, components }
 router.post(
   "/wa/send-template",
-  authMiddleware,
   platformResolver,
   metaWaController.sendTemplate.bind(metaWaController)
 );
