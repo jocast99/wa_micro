@@ -66,14 +66,14 @@ class MetaWaController {
     const {
       to,
       template_name,
-      language_code = "es_MX",
+      language_code,
       components = [],
     } = req.body;
 
     if (!to || !template_name) {
       return res.status(400).json({
         success: false,
-        error: "to y template_name son obligatorios",
+        error: "to, template_name y language_code son obligatorios",
       });
     }
 
