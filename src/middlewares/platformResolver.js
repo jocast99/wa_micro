@@ -1,7 +1,7 @@
 const PLATFORMS = require("../config/platform");
 
 function platformResolver(req, res, next) {
-  const platform = (req.body.platform).toLowerCase();
+  const platform = (req.body.platform || req.query.platform || req.headers["x-platform"] || "").toLowerCase();
   const apiKey   = req.headers["authorization"];
   
 
