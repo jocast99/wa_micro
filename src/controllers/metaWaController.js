@@ -66,7 +66,7 @@ class MetaWaController {
     const {
       to,
       template_name,
-      language_code = "es_GT",
+      language_code = "es_MX",
       components = [],
     } = req.body;
 
