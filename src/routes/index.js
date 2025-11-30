@@ -17,8 +17,10 @@ router.post(
 router.post("/webhook", webhookController.handleWebhook);
 
 ///// Meta Whatsapp API /////
-router.post("/wa/send", authMiddleware, (req, res) =>
-  metaWaController.sendText(req, res)
+router.post(
+  "/wa/send", 
+  authMiddleware, 
+  metaWaController.sendText.bind(metaWaController)
 );
 
 module.exports = router;
