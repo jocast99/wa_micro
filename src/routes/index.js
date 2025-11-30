@@ -20,7 +20,13 @@ router.post("/webhook", webhookController.handleWebhook);
 router.post(
   "/wa/send", 
   authMiddleware, 
-  metaWaController.sendText.bind(metaWaController)
+  metaWaController.sendMessage.bind(metaWaController)
+);
+
+router.post(
+  "/wa/send-template", 
+  authMiddleware, 
+  metaWaController.sendTemplate.bind(metaWaController)
 );
 
 module.exports = router;
