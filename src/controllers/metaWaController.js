@@ -1,34 +1,34 @@
 const axios = require("axios");
 
 class MetaWaController {
-  constructor() {
-    this.phoneNumberId = process.env.META_WA_PHONE_NUMBER_ID;
-    this.accessToken   = process.env.META_WA_ACCESS_TOKEN;
-    this.apiUrl        = `https://graph.facebook.com/v21.0/${this.phoneNumberId}/messages`;
-  }
-
- 
+  
   async sendMessage(req, res) {
     const { to, body } = req.body;
+    const { wa } = req.platformConfig;
 
     if (!to || !body) {
-      return res.status(400).json({ success: false, error: "to y body son obligatorios" });
+      return res.status(400).json({
+        success: false,
+        error: "to y body son obligatorios",
+      });
     }
+
+    const url = `https://graph.facebook.com/v21.0/${wa.phoneNumberId}/messages`;
 
     const payload = {
       messaging_product: "whatsapp",
       to,
       type: "text",
       text: {
-        preview_url: false,
         body,
+        preview_url: false,
       },
     };
 
     try {
-      const { data } = await axios.post(this.apiUrl, payload, {
+      const { data } = await axios.post(url, payload, {
         headers: {
-          Authorization: `Bearer ${this.accessToken}`,
+          Authorization: `Bearer ${wa.accessToken}`,
           "Content-Type": "application/json",
         },
       });
@@ -45,37 +45,34 @@ class MetaWaController {
   }
 
   /**
-   * Enviar mensaje de plantilla (HSM) – para fuera de 24h o notificaciones.
-   * body esperado:
+   * Enviar mensaje de plantilla (HSM)
+   * body:
    * {
-   *   to: "5025xxxxxxx",
-   *   template_name: "recordatorio_pago",
-   *   language_code: "es_MX",
-   *   components: [
-   *     {
-   *       type: "body",
-   *       parameters: [
-   *         { type: "text", text: "Josué" },
-   *         { type: "text", text: "Q1,250.00" },
-   *       ]
-   *     }
-   *   ]
+   *   platform,
+   *   to,
+   *   template_name,
+   *   language_code,
+   *   components: [...]
    * }
    */
   async sendTemplate(req, res) {
     const {
       to,
       template_name,
-      language_code,
+      language_code = "es_MX",
       components = [],
     } = req.body;
+
+    const { wa } = req.platformConfig;
 
     if (!to || !template_name) {
       return res.status(400).json({
         success: false,
-        error: "to, template_name y language_code son obligatorios",
+        error: "to y template_name son obligatorios",
       });
     }
+
+    const url = `https://graph.facebook.com/v21.0/${wa.phoneNumberId}/messages`;
 
     const payload = {
       messaging_product: "whatsapp",
@@ -91,9 +88,9 @@ class MetaWaController {
     };
 
     try {
-      const { data } = await axios.post(this.apiUrl, payload, {
+      const { data } = await axios.post(url, payload, {
         headers: {
-          Authorization: `Bearer ${this.accessToken}`,
+          Authorization: `Bearer ${wa.accessToken}`,
           "Content-Type": "application/json",
         },
       });

@@ -1,32 +1,13 @@
 const express = require("express");
-const MessageController = require("../controllers/messageController");
-const WebhookController = require("../controllers/webhookController");
-const MetaWaController = require("../controllers/metaWaController");
-const authMiddleware = require("../middlewares/authMiddleware");
-
 const router = express.Router();
-const messageController = new MessageController();
-const webhookController = new WebhookController();
-const metaWaController = new MetaWaController();
 
-router.post(
-  "/send-message",
-  authMiddleware,
-  messageController.sendMessage.bind(messageController)
-);
-router.post("/webhook", webhookController.handleWebhook);
+const coreRoutes = require("./core");
+const metaRoutes = require("./meta");
 
-///// Meta Whatsapp API /////
-router.post(
-  "/wa/send", 
-  authMiddleware, 
-  metaWaController.sendMessage.bind(metaWaController)
-);
+// Rutas de Twilio + webhook
+router.use(coreRoutes);
 
-router.post(
-  "/wa/send-template", 
-  authMiddleware, 
-  metaWaController.sendTemplate.bind(metaWaController)
-);
+// Rutas de Meta WhatsApp (con platform)
+router.use(metaRoutes);
 
 module.exports = router;
